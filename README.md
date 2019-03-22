@@ -26,27 +26,29 @@ AR Tracking
 http://wiki.ros.org/ar_track_alvar
 
 ## Execution:
-1.Build and source setup.bash
-```
-(In catkin_ws directory after cloning repo into catkin_ws/src)
-catkin_make
-source ./devel/setup.bash
-```
-2.Connect to the Kobuki, a usb webcam, and Asus Xtion Pro
-3.Place Kobuki on race track
-4.Startup all required nodes `roslaunch comp3 all.launch`
-  This launches:
-  a. kobuki base
-  b. 3dsensors
-  c. bottom camera
-  d. amcl, map server, move base
-  e. ar_track_alvar
-5.Start the competition three node `roslaunch comp3 comp3.launch rp:=${n}`
-  Where `${n}` is the corresponding number of the parking spots 
+1. Build and source setup.bash
+   ```
+   (In catkin_ws directory after cloning repo into catkin_ws/src)
+   catkin_make
+   source ./devel/setup.bash
+   ```
+1. Connect to the Kobuki and Asus Xtion Pro
+1. Place Kobuki on race track
+1. Startup all required nodes
+   `roslaunch comp3 all.launch (will launch the below nodes)`
+   * kobuki base
+   * 3dsensors
+   * bottom camera
+   * amcl, map server, move base
+   * ar_track_alvar
+1. Start the competition three node `roslaunch comp3 comp3.launch rp:=${n}`
+  Where `${n}` is the corresponding number of the randomly chosen parking spot
   
 ## Concepts and code
 
 * State Machine
+![alt text](https://raw.githubusercontent.com/jackykc/comp3/master/comp3sm.png)
+
 ```
 1. In the GO state, the turtlebot does line tracking.
 2. Upon seeing a red line, we move to a stop state, incrementing 
@@ -90,11 +92,11 @@ source ./devel/setup.bash
 This process is done by the ar_track_alvar node, we subscribe to “/ar_pose_marker” and store the current marker pose.
 
 # Code explanations (Only task four differs)
-[Get shape at parking spot](https://github.com/jackykc/comp3/blob/master/src/comp3.py#L227)
+[Get shape at parking spot (task four)](https://github.com/jackykc/comp3/blob/master/src/comp3.py#L227)
 ``` python
 def detect_4(image):
     ...
-    # threshold for red
+    # threshold for red colors
     mask_red = cv2.inRange(hsv, lower_red, upper_red)
     thresh_red = mask_red
     kernel = numpy.ones((3,3),numpy.float32)/25
@@ -109,17 +111,20 @@ def detect_4(image):
     # return the shape of the largest contour
     return masked, count, get_shape_id(vertices)
 ```
-[Visit each parking spot for location 4](https://github.com/jackykc/comp3/blob/master/src/comp3.py#L602)
+[Visit each parking spot for location 4 (task four)](https://github.com/jackykc/comp3/blob/master/src/comp3.py#L602)
 ``` python
-# set current pose in map
+# set initial pose in map
 start_pose = initial_pose(waypoints[10])
 initial_pose_pub.publish(start_pose)
 
 # turn robot to help localize map
 while rospy.Time.now()<wait_time:
-    # turn
     self.twist.linear.x = 0
-    self.twist.angular.z = -1.6
+    self.twist.angular.z = 1.6
+    cmd_vel_pub.publish(self.twist)
+wait_time = rospy.Time.now() + rospy.Duration(1.2)
+while rospy.Time.now()<wait_time:
+    self.twist.angular.z = 1.6
     cmd_vel_pub.publish(self.twist)
 ...
 ...
