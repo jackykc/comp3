@@ -1,0 +1,9 @@
+<launch>
+  <arg name="rp" default="0"/>
+  <node respawn="false" pkg="comp3"
+        type="comp3.py" name="comp3" output="screen">
+    
+
+    <param name="rp" type="int" value="$(arg rp)" />
+  </node>
+</launch>
