@@ -1,8 +1,8 @@
 ## Purpose
-In this competition we demonstrate how to use ar tag recognition, additional webcam, mapping, and navigation. A majority of this is the same from [competition 2](https://github.com/jackykc/comp2/blob/master/README.md). The new task introduced is eight parking spots where we have to signal through LED and sound that one has an ARTag, one that was randomly chosen at the start of the round, and one that has the same shape as the green one from task two.
+In this competition we demonstrate how to use ARTag recognition, mapping, navigation, and an additional webcam for line following. A majority of this is the same from [competition 2](https://github.com/jackykc/comp2/blob/master/README.md). The new task introduced is eight parking spots where we have to signal through LED and sound the parking spot that has an ARTag, one that was randomly chosen at the start of the round, and one that has the same shape as the green one from task two.
 
 ## Prerequisites
-* Kobuki Turtlebot with an Asus Xtion Pro
+* Kobuki Turtlebot with an Asus Xtion Pro and a usb camera
 * Ubuntu 16.04
 * [ROS Kinetic](http://wiki.ros.org/kinetic/Installation/Ubuntu) (Desktop or Desktop-Full)
 * [Turtlebot](http://wiki.ros.org/action/show/Robots/TurtleBot), [Kobuki Packages](http://wiki.ros.org/kobuki) and [camera](http://wiki.ros.org/openni_camera)
@@ -32,8 +32,8 @@ http://wiki.ros.org/ar_track_alvar
    catkin_make
    source ./devel/setup.bash
    ```
-1. Connect to the Kobuki and Asus Xtion Pro
-1. Place Kobuki on race track
+1. Connect to the Kobuki, Asus Xtion Pro and usb camera
+1. Place Kobuki on race track with usb camera looking at the track
 1. Startup all required nodes
    `roslaunch comp3 all.launch (will launch the below nodes)`
    * kobuki base
@@ -55,6 +55,7 @@ http://wiki.ros.org/ar_track_alvar
    the number of stops it has seen
 3. After stopping, it will then move onto one of the four tasks
    or the finish state after the last red line has been seen
+4. Task four occurs before task 3.
 ```
 (With the exception of Task 4, the rest are kept the [same](https://github.com/jackykc/comp2/blob/master/README.md))
 * GO (Line Tracking)
@@ -79,8 +80,8 @@ http://wiki.ros.org/ar_track_alvar
     1. Blur thresholded image
     1. Get the shape of the largest red contour using the number of sides
     1. Match the shape with the one obtained from task two
-* Task 4
-  1. Set current pose of the robot for the amcl node (This corener of the room has already been mapped)
+* Task 4 (Visit each parking spot, signaling if the parking spot has and ARTag, the same shape as that of location two, or was randomly chosen at the start of the run.)
+  1. Set current pose of the robot for the amcl node (This corner of the room has already been mapped)
   1. Visit each of the parking spots that has been waypointed before
   1. Check each spot and signal for an ARTag, same shape as the green one from task two, or called spot
       * If /ar_pose_marker is publishing an AR tag at current parking spot, we have found the ARTag
@@ -151,5 +152,5 @@ client.wait_for_result()
 ```
 
 Video:
-
+https://www.youtube.com/watch?v=SQwM5Pcp4Fw&feature=youtu.be
 
