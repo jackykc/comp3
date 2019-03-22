@@ -1,3 +1,4 @@
+Jacky Chung and Yi Zhang
 ## Purpose
 In this competition we demonstrate how to use ARTag recognition, mapping, navigation, and an additional webcam for line following. A majority of this is the same from [competition 2](https://github.com/jackykc/comp2/blob/master/README.md). The new task introduced is eight parking spots where we have to signal through LED and sound the parking spot that has an ARTag, one that was randomly chosen at the start of the round, and one that has the same shape as the green one from task two.
 
@@ -69,7 +70,7 @@ http://wiki.ros.org/ar_track_alvar
   1. Threshold to keep only the red pixels of the image
   1. Blur threshold image
   1. Find and count contours larger than a specified minimum size from blurred image
-* Task 2 (Count objects location 2 and determine green shape)
+* Task 2 (Count objects at location 2 and determine green shape)
   1. Create two thresholded images, one for red and one for green
   1. Find contours bigger than a specified minimum size for both images
   1. Count the returned contours
