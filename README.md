@@ -93,6 +93,8 @@ http://wiki.ros.org/ar_track_alvar
 This process is done by the ar_track_alvar node, we subscribe to “/ar_pose_marker” and store the current marker pose.
 
 # Code explanations (Only task four differs)
+[Competition Two code explanations included here for the remaining tasks](https://github.com/jackykc/comp2/blob/master/README.md#code-explanations)
+
 [Get shape at parking spot (task four)](https://github.com/jackykc/comp3/blob/master/src/comp3.py#L227)
 ``` python
 def detect_4(image):
